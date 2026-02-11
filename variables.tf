@@ -43,7 +43,7 @@ EOT
     service_principal_key      = optional(string)
     storage_kind               = optional(string)
     tenant_id                  = optional(string)
-    use_managed_identity       = optional(bool, false)
+    use_managed_identity       = optional(bool) # Default: false
     key_vault_sas_token = optional(object({
       linked_service_name = string
       secret_name         = string
