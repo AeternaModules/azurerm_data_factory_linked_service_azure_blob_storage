@@ -26,6 +26,14 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "data_factory_
     }
   }
 
+  dynamic "sas_token_linked_key_vault_key" {
+    for_each = each.value.sas_token_linked_key_vault_key != null ? [each.value.sas_token_linked_key_vault_key] : []
+    content {
+      linked_service_name = sas_token_linked_key_vault_key.value.linked_service_name
+      secret_name         = sas_token_linked_key_vault_key.value.secret_name
+    }
+  }
+
   dynamic "service_principal_linked_key_vault_key" {
     for_each = each.value.service_principal_linked_key_vault_key != null ? [each.value.service_principal_linked_key_vault_key] : []
     content {
