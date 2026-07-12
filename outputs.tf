@@ -1,3 +1,7 @@
+output "data_factory_linked_service_azure_blob_storages_id" {
+  description = "Map of id values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
+  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.id }
+}
 output "data_factory_linked_service_azure_blob_storages_additional_properties" {
   description = "Map of additional_properties values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
   value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.additional_properties }
