@@ -1,3 +1,18 @@
+data "azurerm_key_vault_secret" "connection_string" {
+  for_each     = { for k, v in var.data_factory_linked_service_azure_blob_storages : k => v if v.connection_string_key_vault_id != null && v.connection_string_key_vault_secret_name != null }
+  name         = each.value.connection_string_key_vault_secret_name
+  key_vault_id = each.value.connection_string_key_vault_id
+}
+data "azurerm_key_vault_secret" "sas_uri" {
+  for_each     = { for k, v in var.data_factory_linked_service_azure_blob_storages : k => v if v.sas_uri_key_vault_id != null && v.sas_uri_key_vault_secret_name != null }
+  name         = each.value.sas_uri_key_vault_secret_name
+  key_vault_id = each.value.sas_uri_key_vault_id
+}
+data "azurerm_key_vault_secret" "service_endpoint" {
+  for_each     = { for k, v in var.data_factory_linked_service_azure_blob_storages : k => v if v.service_endpoint_key_vault_id != null && v.service_endpoint_key_vault_secret_name != null }
+  name         = each.value.service_endpoint_key_vault_secret_name
+  key_vault_id = each.value.service_endpoint_key_vault_id
+}
 resource "azurerm_data_factory_linked_service_azure_blob_storage" "data_factory_linked_service_azure_blob_storages" {
   for_each = var.data_factory_linked_service_azure_blob_storages
 
@@ -5,13 +20,13 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "data_factory_
   name                       = each.value.name
   additional_properties      = each.value.additional_properties
   annotations                = each.value.annotations
-  connection_string          = each.value.connection_string
+  connection_string          = each.value.connection_string != null ? each.value.connection_string : try(data.azurerm_key_vault_secret.connection_string[each.key].value, null)
   connection_string_insecure = each.value.connection_string_insecure
   description                = each.value.description
   integration_runtime_name   = each.value.integration_runtime_name
   parameters                 = each.value.parameters
-  sas_uri                    = each.value.sas_uri
-  service_endpoint           = each.value.service_endpoint
+  sas_uri                    = each.value.sas_uri != null ? each.value.sas_uri : try(data.azurerm_key_vault_secret.sas_uri[each.key].value, null)
+  service_endpoint           = each.value.service_endpoint != null ? each.value.service_endpoint : try(data.azurerm_key_vault_secret.service_endpoint[each.key].value, null)
   service_principal_id       = each.value.service_principal_id
   service_principal_key      = each.value.service_principal_key
   storage_kind               = each.value.storage_kind

@@ -8,12 +8,18 @@ Optional:
     - additional_properties
     - annotations
     - connection_string
+    - connection_string_key_vault_id (alternative to connection_string - read from Key Vault instead)
+    - connection_string_key_vault_secret_name (alternative to connection_string - read from Key Vault instead)
     - connection_string_insecure
     - description
     - integration_runtime_name
     - parameters
     - sas_uri
+    - sas_uri_key_vault_id (alternative to sas_uri - read from Key Vault instead)
+    - sas_uri_key_vault_secret_name (alternative to sas_uri - read from Key Vault instead)
     - service_endpoint
+    - service_endpoint_key_vault_id (alternative to service_endpoint - read from Key Vault instead)
+    - service_endpoint_key_vault_secret_name (alternative to service_endpoint - read from Key Vault instead)
     - service_principal_id
     - service_principal_key
     - storage_kind
@@ -31,22 +37,28 @@ Optional:
 EOT
 
   type = map(object({
-    data_factory_id            = string
-    name                       = string
-    additional_properties      = optional(map(string))
-    annotations                = optional(list(string))
-    connection_string          = optional(string)
-    connection_string_insecure = optional(string)
-    description                = optional(string)
-    integration_runtime_name   = optional(string)
-    parameters                 = optional(map(string))
-    sas_uri                    = optional(string)
-    service_endpoint           = optional(string)
-    service_principal_id       = optional(string)
-    service_principal_key      = optional(string)
-    storage_kind               = optional(string)
-    tenant_id                  = optional(string)
-    use_managed_identity       = optional(bool) # Default: false
+    data_factory_id                         = string
+    name                                    = string
+    additional_properties                   = optional(map(string))
+    annotations                             = optional(list(string))
+    connection_string                       = optional(string)
+    connection_string_key_vault_id          = optional(string)
+    connection_string_key_vault_secret_name = optional(string)
+    connection_string_insecure              = optional(string)
+    description                             = optional(string)
+    integration_runtime_name                = optional(string)
+    parameters                              = optional(map(string))
+    sas_uri                                 = optional(string)
+    sas_uri_key_vault_id                    = optional(string)
+    sas_uri_key_vault_secret_name           = optional(string)
+    service_endpoint                        = optional(string)
+    service_endpoint_key_vault_id           = optional(string)
+    service_endpoint_key_vault_secret_name  = optional(string)
+    service_principal_id                    = optional(string)
+    service_principal_key                   = optional(string)
+    storage_kind                            = optional(string)
+    tenant_id                               = optional(string)
+    use_managed_identity                    = optional(bool) # Default: false
     key_vault_sas_token = optional(object({
       linked_service_name = string
       secret_name         = string
