@@ -58,7 +58,7 @@ EOT
     service_principal_key                   = optional(string)
     storage_kind                            = optional(string)
     tenant_id                               = optional(string)
-    use_managed_identity                    = optional(bool) # Default: false
+    use_managed_identity                    = optional(bool)
     key_vault_sas_token = optional(object({
       linked_service_name = string
       secret_name         = string
@@ -72,118 +72,6 @@ EOT
       secret_name         = string
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.connection_string == null || (length(v.connection_string) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.connection_string_insecure == null || (length(v.connection_string_insecure) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.storage_kind == null || (contains(["Storage", "StorageV2", "BlobStorage", "BlockBlobStorage"], v.storage_kind))
-      )
-    ])
-    error_message = "must be one of: Storage, StorageV2, BlobStorage, BlockBlobStorage"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.sas_uri == null || (length(v.sas_uri) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.sas_token_linked_key_vault_key == null || (length(v.sas_token_linked_key_vault_key.linked_service_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.sas_token_linked_key_vault_key == null || (length(v.sas_token_linked_key_vault_key.secret_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.service_principal_linked_key_vault_key == null || (length(v.service_principal_linked_key_vault_key.linked_service_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.service_principal_linked_key_vault_key == null || (length(v.service_principal_linked_key_vault_key.secret_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.description == null || (length(v.description) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.integration_runtime_name == null || (length(v.integration_runtime_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.service_endpoint == null || (length(v.service_endpoint) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.service_principal_id == null || (can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", v.service_principal_id)))
-      )
-    ])
-    error_message = "must be a valid UUID"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.service_principal_key == null || (length(v.service_principal_key) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.data_factory_linked_service_azure_blob_storages : (
-        v.tenant_id == null || (length(v.tenant_id) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_data_factory_linked_service_azure_blob_storage's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -194,6 +82,48 @@ EOT
   #   source:    [from factories.ValidateFactoryID] !ok
   # path: data_factory_id
   #   source:    [from factories.ValidateFactoryID] err != nil
+  # path: connection_string
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: connection_string_insecure
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: storage_kind
+  #   condition: contains(["Storage", "StorageV2", "BlobStorage", "BlockBlobStorage"], value)
+  #   message:   must be one of: Storage, StorageV2, BlobStorage, BlockBlobStorage
+  # path: sas_uri
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: sas_token_linked_key_vault_key.linked_service_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: sas_token_linked_key_vault_key.secret_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: service_principal_linked_key_vault_key.linked_service_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: service_principal_linked_key_vault_key.secret_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: description
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: integration_runtime_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: service_endpoint
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: service_principal_id
+  #   condition: can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", value))
+  #   message:   must be a valid UUID
+  # path: service_principal_key
+  #   condition: length(value) > 0
+  #   message:   must not be empty
+  # path: tenant_id
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: linked_service_name
   #   condition: length(value) > 0
   #   message:   must not be empty
