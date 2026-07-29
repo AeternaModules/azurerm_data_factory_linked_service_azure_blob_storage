@@ -33,14 +33,6 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "data_factory_
   tenant_id                  = each.value.tenant_id
   use_managed_identity       = each.value.use_managed_identity
 
-  dynamic "key_vault_sas_token" {
-    for_each = each.value.key_vault_sas_token != null ? [each.value.key_vault_sas_token] : []
-    content {
-      linked_service_name = key_vault_sas_token.value.linked_service_name
-      secret_name         = key_vault_sas_token.value.secret_name
-    }
-  }
-
   dynamic "sas_token_linked_key_vault_key" {
     for_each = each.value.sas_token_linked_key_vault_key != null ? [each.value.sas_token_linked_key_vault_key] : []
     content {

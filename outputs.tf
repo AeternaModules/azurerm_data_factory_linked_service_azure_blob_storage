@@ -31,10 +31,6 @@ output "data_factory_linked_service_azure_blob_storages_integration_runtime_name
   description = "Map of integration_runtime_name values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
   value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.integration_runtime_name if v.integration_runtime_name != null && length(v.integration_runtime_name) > 0 }
 }
-output "data_factory_linked_service_azure_blob_storages_key_vault_sas_token" {
-  description = "Map of key_vault_sas_token values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
-  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.key_vault_sas_token if v.key_vault_sas_token != null && length(v.key_vault_sas_token) > 0 }
-}
 output "data_factory_linked_service_azure_blob_storages_name" {
   description = "Map of name values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
   value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.name if v.name != null && length(v.name) > 0 }

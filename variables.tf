@@ -25,9 +25,6 @@ Optional:
     - storage_kind
     - tenant_id
     - use_managed_identity
-    - key_vault_sas_token (block):
-        - linked_service_name (required)
-        - secret_name (required)
     - sas_token_linked_key_vault_key (block):
         - linked_service_name (required)
         - secret_name (required)
@@ -59,10 +56,6 @@ EOT
     storage_kind                            = optional(string)
     tenant_id                               = optional(string)
     use_managed_identity                    = optional(bool)
-    key_vault_sas_token = optional(object({
-      linked_service_name = string
-      secret_name         = string
-    }))
     sas_token_linked_key_vault_key = optional(object({
       linked_service_name = string
       secret_name         = string
