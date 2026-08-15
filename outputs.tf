@@ -41,7 +41,7 @@ output "data_factory_linked_service_azure_blob_storages_parameters" {
 }
 output "data_factory_linked_service_azure_blob_storages_sas_token_linked_key_vault_key" {
   description = "Map of sas_token_linked_key_vault_key values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
-  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.sas_token_linked_key_vault_key if v.sas_token_linked_key_vault_key != null && length(v.sas_token_linked_key_vault_key) > 0 }
+  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => one(v.sas_token_linked_key_vault_key) if v.sas_token_linked_key_vault_key != null && length(v.sas_token_linked_key_vault_key) > 0 }
 }
 output "data_factory_linked_service_azure_blob_storages_sas_uri" {
   description = "Map of sas_uri values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
@@ -63,7 +63,7 @@ output "data_factory_linked_service_azure_blob_storages_service_principal_key" {
 }
 output "data_factory_linked_service_azure_blob_storages_service_principal_linked_key_vault_key" {
   description = "Map of service_principal_linked_key_vault_key values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
-  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => v.service_principal_linked_key_vault_key if v.service_principal_linked_key_vault_key != null && length(v.service_principal_linked_key_vault_key) > 0 }
+  value       = { for k, v in azurerm_data_factory_linked_service_azure_blob_storage.data_factory_linked_service_azure_blob_storages : k => one(v.service_principal_linked_key_vault_key) if v.service_principal_linked_key_vault_key != null && length(v.service_principal_linked_key_vault_key) > 0 }
 }
 output "data_factory_linked_service_azure_blob_storages_storage_kind" {
   description = "Map of storage_kind values across all data_factory_linked_service_azure_blob_storages, keyed the same as var.data_factory_linked_service_azure_blob_storages"
